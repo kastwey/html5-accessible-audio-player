@@ -12,8 +12,8 @@ function accessibleAlert(text, wrapper) {
 	setTimeout(function () {
 		var divAlert;
 		if (wrapper.find(".parrafoEstadoAudio").length == 0) {
-			var parrafoMensaje = jQuery('<p class="sr-only parrafoEstadoAudio">鷏timo mensaje de estado: </p>');
-			divAlert = jQuery('<div class="divAlertaAudio" role="alert" aria-live="assertive"></div>');
+			var parrafoMensaje = $('<p class="sr-only parrafoEstadoAudio">鷏timo mensaje de estado: </p>');
+			divAlert = $('<div class="divAlertaAudio" role="alert" aria-live="assertive"></div>');
 			parrafoMensaje.append(divAlert);
 			wrapper.append(parrafoMensaje);
 		}
@@ -61,7 +61,7 @@ function cargaReproductores() {
 		alert("Imposible generar reproductores HTML5. Tu navegador no es compatible. Por favor, actual韟alo.");
 		return;
 	}
-	jQuery("audio").each(function (i, val) { cargaReproductor(jQuery(val)); });
+	$("audio").each(function (i, val) { cargaReproductor($(val)); });
 }
 
 function cargaReproductor(audioElement) {
@@ -79,7 +79,7 @@ function cargaReproductor(audioElement) {
 		wrap.find(".btnPlay").html("Pausar" + agregaTitulo(titulo, "el audio"));
 	};
 	audioElement.onplaying = function () {
-		jQuery("audio").not(jQuery(audioElement)).each(function (i, val) { if (!val.paused) val.pause(); });
+		$("audio").not($(audioElement)).each(function (i, val) { if (!val.paused) val.pause(); });
 
 		wrap.find(".btnPlay").html("Pausar" + agregaTitulo(titulo, "el audio"));
 	};
@@ -116,20 +116,20 @@ function cargaReproductor(audioElement) {
 function agregaControlesAccesibles(audioWrapper) {
 	var audioElement = audioWrapper.find("audio:first");
 	var titulo = audioElement.attr("data-title");
-	if (audioWrapper.find(".controlesReproductor").length == 0) {
-		var btnPlay = jQuery('<a href="#" class="btnPlayerControl btnPlay" >Reproducir' + agregaTitulo(titulo, 'el audio') + '</a>');
-		var btnMute = jQuery('<a href="#" class="btnPlayerControl btnMute" >Desactivar / activar sonido' + agregaTitulo(titulo, 'al episodio') + '</a>');
-		var btnVolumeDown = jQuery('<a href="#" class="btnPlayerControl btnVolumeDown" >Bajar volumen' + agregaTitulo(titulo, 'al audio') + '</a>');
-		var btnVolumeUp = jQuery('<a href="#" class="btnPlayerControl btnVolumeUp" >Subir volumen' + agregaTitulo(titulo, 'al audio') + '</a>');
-		var btnFw30Secs = jQuery('<a href="#" class="btnPlayerControl btnFw30Secs" >Avanzar treinta segundos' + agregaTitulo(titulo, 'en el audio') + '</a>');
-		var btnBw30Secs = jQuery('<a href="#" class="btnPlayerControl btnBw30Secs" >Retroceder treinta segundos' + agregaTitulo(titulo, 'en el audio') + '</a>');
-		var dlInfo = jQuery('<dl></dl>');
-		var dtPosicion = jQuery('<dt>Posici贸n:</dt>');
-		var ddPosicion = jQuery('<dd class=\"ddPosicion\">0 segundos</dd>');
-		var dtDuracion = jQuery('<dt>Duraci贸n:</dt>');
-		var ddDuracion = jQuery('<dd class=\"ddDuracion\">Desconocida</dd>');
-		var ul = jQuery("<ul></ul>"), liPlay = jQuery('<li class="liControl"></li>'), liMute = jQuery('<li class="liControl"></li>'), liVolumeDown = jQuery('<li class="liControl"></li>'), liVolumeUp = jQuery('<li class="liControl"></li>'), liFw30Secs = jQuery('<li class="liControl"></li>'), liBw30Secs = jQuery('<li class="liControl"></li>');
-		var capaControles = jQuery("<div class=\"controlesReproductor sr-only\"></div>");
+	if (audioWrapper.find(".playerControls").length == 0) {
+		var btnPlay = $('<a href="#" class="btnPlayerControl btnPlay" >Reproducir' + agregaTitulo(titulo, 'el audio') + '</a>');
+		var btnMute = $('<a href="#" class="btnPlayerControl btnMute" >Desactivar / activar sonido' + agregaTitulo(titulo, 'al episodio') + '</a>');
+		var btnVolumeDown = $('<a href="#" class="btnPlayerControl btnVolumeDown" >Bajar volumen' + agregaTitulo(titulo, 'al audio') + '</a>');
+		var btnVolumeUp = $('<a href="#" class="btnPlayerControl btnVolumeUp" >Subir volumen' + agregaTitulo(titulo, 'al audio') + '</a>');
+		var btnFw30Secs = $('<a href="#" class="btnPlayerControl btnFw30Secs" >Avanzar treinta segundos' + agregaTitulo(titulo, 'en el audio') + '</a>');
+		var btnBw30Secs = $('<a href="#" class="btnPlayerControl btnBw30Secs" >Retroceder treinta segundos' + agregaTitulo(titulo, 'en el audio') + '</a>');
+		var dlInfo = $('<dl></dl>');
+		var dtPosicion = $('<dt>Posici贸n:</dt>');
+		var ddPosicion = $('<dd class=\"ddPosicion\">0 segundos</dd>');
+		var dtDuracion = $('<dt>Duraci贸n:</dt>');
+		var ddDuracion = $('<dd class=\"ddDuracion\">Desconocida</dd>');
+		var ul = $("<ul></ul>"), liPlay = $('<li class="liControl"></li>'), liMute = $('<li class="liControl"></li>'), liVolumeDown = $('<li class="liControl"></li>'), liVolumeUp = $('<li class="liControl"></li>'), liFw30Secs = $('<li class="liControl"></li>'), liBw30Secs = $('<li class="liControl"></li>');
+		var capaControles = $("<div class=\"playerControls sr-only\"></div>");
 		capaControles.insertBefore(audioElement);
 		if (audioElement.attr("data-showDownloadLink") == "true") {
 			var url;
@@ -143,8 +143,8 @@ function agregaControlesAccesibles(audioWrapper) {
 				}
 			}
 			if (url !== undefined) {
-				var lnkDescargar = jQuery('<a class="lnkDescargar" href="' + url + '">Descargar' + agregaTitulo(titulo, "el audio", true) + '</a>');
-				var pLnkDescargar = jQuery("<p></p>");
+				var lnkDescargar = $('<a class="lnkDescargar" href="' + url + '">Descargar' + agregaTitulo(titulo, "el audio", true) + '</a>');
+				var pLnkDescargar = $("<p></p>");
 				pLnkDescargar.append(lnkDescargar);
 				pLnkDescargar.insertBefore(capaControles);
 			}
@@ -175,10 +175,10 @@ function agregaControlesAccesibles(audioWrapper) {
 	}
 }
 
-jQuery(function() {
-	jQuery("html").on("click", ".btnPlay", function (e) {
+$(function() {
+	$("html").on("click", ".btnPlay", function (e) {
 		e.preventDefault();
-		var wraper = jQuery(this).parents(".wrapRepro");
+		var wraper = $(this).parents(".wrapRepro");
 		var audioElement = wraper.find("audio");
 		audioElement = audioElement[0];
 		if (audioElement.paused) {
@@ -188,50 +188,56 @@ jQuery(function() {
 			audioElement.pause();
 		}
 	});
-	jQuery("html").on("click", ".btnMute", function (e) {
+	$("html").on("click", ".btnMute", function (e) {
 		e.preventDefault();
-		var wraper = jQuery(this).parents(".wrapRepro");
+		var wraper = $(this).parents(".wrapRepro");
 		var audioElement = wraper.find("audio");
 		var titulo = audioElement.attr("data-title");
 		audioElement = audioElement[0];
 		if (audioElement.muted) {
-			jQuery(this).html('Silenciar' + agregaTitulo(titulo, 'el audio'));
+			$(this).html('Silenciar' + agregaTitulo(titulo, 'el audio'));
 		}
 		else {
-			jQuery(this).html('Activar sonido' + agregaTitulo(titulo, 'al episodio'));
+			$(this).html('Activar sonido' + agregaTitulo(titulo, 'al episodio'));
 		}
 		audioElement.muted = !audioElement.muted;
 	});
-	jQuery("html").on("click", ".btnVolumeUp", function (e) {
+	$("html").on("click", ".btnVolumeUp", function (e) {
 		e.preventDefault();
-		var wrapper = jQuery(this).parents(".wrapRepro");
+		var wrapper = $(this).parents(".wrapRepro");
 		var audioElement = wrapper.find("audio")[0];
 		if (audioElement.volume == 100.0) return;
 		if (audioElement.volume > 0.9) audioElement.volume = 1;
 		else audioElement.volume += 0.1;
 	});
 
-	jQuery("html").on("click", ".btnVolumeDown", function (e) {
+	$("html").on("click", ".btnVolumeDown", function (e) {
 		e.preventDefault();
-		var wrapper = jQuery(this).parents(".wrapRepro:first");
+		var wrapper = $(this).parents(".wrapRepro:first");
 		var audioElement = wrapper.find("audio")[0];
 		if (audioElement.volume == 0.0) return;
 		if (audioElement.volume < 0.1) audioElement.volume = 0;
 		else audioElement.volume -= 0.1;
 	});
-	jQuery("html").on("click", ".btnFw30Secs", function (e) {
+	$("html").on("click", ".btnFw30Secs", function (e) {
 		e.preventDefault();
-		var wrapper = jQuery(this).parents(".wrapRepro:first");
+		var wrapper = $(this).parents(".wrapRepro:first");
 		var audioElement = wrapper.find("audio")[0];
 		if (audioElement.currentTime + 30 > audioElement.duration) audioElement.currentTime = audioElement.duration;
 		else audioElement.currentTime += 30;
 	});
-	jQuery("html").on("click", ".btnBw30Secs", function (e) {
+	$("html").on("click", ".btnBw30Secs", function (e) {
 		e.preventDefault();
-		var wrapper = jQuery(this).parents(".wrapRepro:first");
+		var wrapper = $(this).parents(".wrapRepro:first");
 		var audioElement = wrapper.find("audio")[0];
 		if (audioElement.currentTime - 30 < 0) audioElement.currentTime = 0;
 		else audioElement.currentTime -= 30;
+	});
+	$("html").on("focus", "a.btnPlayerControl", function () {
+			$(this).parents(".playerControls").removeClass("sr-only");
+	}); 
+	$("html").on("blur", "a.btnPlayerControl", function () {
+		$(this).parents(".playerControls").addClass("sr-only");
 	});
 	cargaReproductores();
 });
