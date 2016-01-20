@@ -118,7 +118,7 @@ function agregaControlesAccesibles(audioWrapper) {
 	var titulo = audioElement.attr("data-title");
 	if (audioWrapper.find(".playerControls").length == 0) {
 		var btnPlay = $('<a href="#" class="btnPlayerControl btnPlay" >Reproducir' + agregaTitulo(titulo, 'el audio') + '</a>');
-		var btnMute = $('<a href="#" class="btnPlayerControl btnMute" >Desactivar / activar sonido' + agregaTitulo(titulo, 'al episodio') + '</a>');
+		var btnMute = $('<a href="#" class="btnPlayerControl btnMute" >Desactivar / activar sonido' + agregaTitulo(titulo, 'al audio') + '</a>');
 		var btnVolumeDown = $('<a href="#" class="btnPlayerControl btnVolumeDown" >Bajar volumen' + agregaTitulo(titulo, 'al audio') + '</a>');
 		var btnVolumeUp = $('<a href="#" class="btnPlayerControl btnVolumeUp" >Subir volumen' + agregaTitulo(titulo, 'al audio') + '</a>');
 		var btnFw30Secs = $('<a href="#" class="btnPlayerControl btnFw30Secs" >Avanzar treinta segundos' + agregaTitulo(titulo, 'en el audio') + '</a>');
@@ -198,7 +198,7 @@ $(function() {
 			$(this).html('Silenciar' + agregaTitulo(titulo, 'el audio'));
 		}
 		else {
-			$(this).html('Activar sonido' + agregaTitulo(titulo, 'al episodio'));
+			$(this).html('Activar sonido' + agregaTitulo(titulo, 'al audio'));
 		}
 		audioElement.muted = !audioElement.muted;
 	});
