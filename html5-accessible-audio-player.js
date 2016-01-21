@@ -89,7 +89,7 @@ function preparePlayer(audioElement) {
 	var wrap = $("<div class=\"playerWrapper\"></div");
 	audioElement.wrap(wrap);
 	wrap = audioElement.parent();
-	if (audioNativeElement.readyState == AUDIO_HAVE_ENOUGH_DATA) {
+	if (audioNativeElement.readyState >= AUDIO_HAVE_CURRENT_DATA) {
 		addAccessibleControls(wrap);
 	}
 	audioNativeElement.oncanplay = function () {
