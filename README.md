@@ -24,12 +24,14 @@ To embed the script in your page, simply add the js files listed below in your b
 * html5-accessible-audio-player.js (the main script).
 
 Example:
-	```js
+	```
+	
 	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="icu_en.js"></script>
 	<script type="text/javascript" src="translate.js"></script>
 	<script type="text/javascript" src="en.js"></script>
 	<script type="text/javascript" src="html5-accessible-audio-player.js"></script>
+	
 	```
 
 ## Configuring the player
@@ -40,12 +42,15 @@ To configure this, after embedding all scripts, make a call to the function html
 * Native html5 audio element visually hidden using css class defined in styles.css: audioHideVisually
 * native html5 audio element hidden for screen readers (using aria-hidden): audioHideScreenReaders,
 *Accessible controls visually hidden using css class defined in styles.css: accessibleControlsHideVisually
-	```js
+
+Example to hide the native html5 audio element both visually and to screen readers:
+
+	```
+
 	<script type="text/javascript">
 		html5AcAudio.configure(html5AcAudio.configVisibility.audioHideScreenReaders | html5AcAudio.configVisibility.audioHideVisually);
 	</script>
 	```
 
-	Example to hide the native html5 audio element both visually and to screen readers:
-
+	
 	
