@@ -7,6 +7,32 @@
 // Additionally, you can add the data-showDownloadLink attribute to the element. If the attribute is true,
 //  a download link will be rendered above accessible controls.
 
+(function () {
+	// flag enum to define controls visibility
+	var html5ConfigVisibility = {
+		// All controls visibles for everybody
+		allVisible: 0,
+		// Native html5 audio element visually hidden using css class defined in styles.css
+		audioHideVisually: 1,
+		// native html5 audio element hidden for screen readers (using aria-hidden)
+		audioHideScreenReaders: 2,
+		// Accessible controls visually hidden using css class defined in styles.css
+		accessibleControlsHideVisually: 4
+	};
+	var configHtml5AcAudio = html5ConfigVisibility.audioHideScreenReaders | html5ConfigVisibility.audioHideVisually;
+	var html5AcAudio = new Object();
+	html5AcAudio.configure = function (config) {
+		configHtml5AcAudio = config;
+	}
+	html5AcAudio.getConfig = function () {
+		return configHtml5AcAudio;
+	}
+	html5AcAudio.configVisibility = html5ConfigVisibility;
+	window.html5AcAudio = html5AcAudio;
+})();
+
+
+
 // Audio ReadyState constants
 const AUDIO_HAVE_NOTHING = 0, AUDIO_HAVE_METADATA = 1, AUDIO_HAVE_CURRENT_DATA = 2,
 	AUDIO_HAVE_FUTURE_DATA = 3, AUDIO_HAVE_ENOUGH_DATA = 4;
@@ -14,22 +40,23 @@ const AUDIO_HAVE_NOTHING = 0, AUDIO_HAVE_METADATA = 1, AUDIO_HAVE_CURRENT_DATA =
 
 
 // Says a text with active screen reader using aria live capabilities.
-function accessibleAlert(text, wrapper) {
-	if (wrapper.length == 0 || !wrapper.is(":visible")) return;
+function accessibleAlert(text) {
 	setTimeout(function () {
 		var divAlert;
-		if (wrapper.find(".audioStateParagraph").length == 0) {
-			var msgParagraph = $('<p class="sr-only audioStateParagraph">' + _('último mensaje de estado:') + '</p>');
-			divAlert = $('<div class="divAlert" role="alert" aria-live="assertive"></div>');
-			msgParagraph.append(divAlert);
-			wrapper.append(msgParagraph);
+		if ($("#accessibleMessage").length > 0) {
+			$("#accessibleMessage").remove();
 		}
-		else {
-			divAlert = wrapper.find(".divAlert");
-		}
+		var messageParagraph= $('<p class="sr-only" id="accessibleMessage">' + _('Mensaje:') + ' </p>');
+		divAlert = $('<div id="alertDiv" role="alert" aria-live="assertive"></div>');
+		messageParagraph.append(divAlert);
+		$("body").append(messageParagraph);
+		divAlert.html("dummy");
 		divAlert.html(text);
+		setTimeout(function () { $("#accessibleMessage").remove(); }, 100);
 	}, 1);
 }
+
+
 
 // Return a string composed by prefix and title.
 // if includeHiddenSpan is true, the text is surrounded by a hidden span that is only visible to screen readers.
@@ -85,13 +112,16 @@ function preparePlayer(audioElement) {
 	// If this player already has been processed to include accessibility layer and events, do not do anithing.
 	if (audioElement.parent().hasClass("playerWrapper")) return;
 	var audioNativeElement = audioElement[0];
-	audioElement.attr("preload", "auto").attr("aria-hidden", "true");
+	audioElement.attr("preload", "auto");
+	var cf = html5AcAudio.getConfig();
+	if (cf & html5AcAudio.configVisibility.audioHideScreenReaders == html5AcAudio.configVisibility.audioHideScreenReaders) audioElement.attr("aria-hidden", "true");
+	if (cf & html5AcAudio.configVisibility.audioHideVisually == html5AcAudio.configVisibility.audioHideVisually) audioElement.hide();
+	audioElement.data["src"] = audioElement.attr("src");
 	var wrap = $("<div class=\"playerWrapper\"></div");
 	audioElement.wrap(wrap);
 	wrap = audioElement.parent();
-	if (audioNativeElement.readyState >= AUDIO_HAVE_CURRENT_DATA) {
-		addAccessibleControls(wrap);
-	}
+	addAccessibleControls(wrap);
+	
 	audioNativeElement.oncanplay = function () {
 		addAccessibleControls(wrap);
 	}
@@ -132,8 +162,46 @@ function preparePlayer(audioElement) {
 		accessibleAlert(_("Pausado..."), wrap);
 
 	};
+	audioElement.focus(function () {
+		if ($(this).attr("aria-hidden") == "true") {
+			$(this).removeAttr("aria-hidden");
+		}
+	});
+	audioElement.blur(function () {
+		var cf = html5AcAudio.getConfig();
+		if (cf & html5AcAudio.configVisibility.audioHideScreenReaders == html5AcAudio.configVisibility.audioHideScreenReaders) $(this).attr("aria-hidden", "true");
+	});
+
 }
 
+function getAudioType(src, type) {
+	if (type === undefined) {
+		if (src.indexOf(".") == -1) return undefined;
+		return src.split('.').pop();
+	}
+	else {
+		if (type.indexOf("/") != -1) {
+			var mimetype = type.split("/").pop();
+			if (mimetype.toLowerCase() == "mpeg") return "mp3";
+			return mimetype;
+		}
+		else {
+			return type;
+		}
+	}
+}
+
+
+function getAudioSources(audioElement) {
+	var url;
+	var sources = [];
+	if (audioElement.attr("src") !== undefined) {
+		sources.push({ url :  audioElement.attr("src"), type : getAudioType(src) });
+	}
+	audioElement.find("source[src]").each(function (i, val) { val = $(val); sources.push({ src: val.attr("src"), type: getAudioType(val.attr("src"), val.attr("type")) }) });
+	return sources;
+}
+		
 
 function addAccessibleControls(audioWrapper) {
 	var audioElement = audioWrapper.find("audio:first");
@@ -141,6 +209,9 @@ function addAccessibleControls(audioWrapper) {
 	var title = audioElement.attr("data-title");
 	var controlsLayer = audioWrapper.find(".playerControls");
 	if (controlsLayer.length > 0) {
+		var priorSrc = audioElement.data["src"];
+		// if src has not changed since last accessible controls creation, do not do anything.
+		if (audioElement.attr("src") == priorSrc) return;
 		controlsLayer.remove();
 	}
 	var btnPlay = $('<a href="#" class="btnPlayerControl btnPlay" >' + _('Reproducir {0}', addTitle(title, _('el audio'))) + '</a>');
@@ -158,21 +229,31 @@ function addAccessibleControls(audioWrapper) {
 	controlsLayer = $("<div class=\"playerControls sr-only\"></div>");
 	controlsLayer.insertBefore(audioElement);
 	if (audioElement.attr("data-showDownloadLink") == "true") {
-		var url;
-		if (audioElement.attr("src") !== undefined) {
-			url = audioElement.attr("src");
-		}
-		else {
-			var source = audioElement.find("source[src]:first");
-			if (source.length > 0) {
-				url = source.attr("src");
+		var sources = getAudioSources(audioElement);
+		if (sources.length > 0) {
+			if (sources.length > 1)
+			{
+				var listSources = $("<ul></ul>");
+				for(var s in sources)
+				{
+					var source = sources[s];
+					if (source.type !== undefined) {
+						listSources.append($("<li><a class=\"downloadLink\" href=\"" + source.src + "\">" +
+							_("Descargar {0} en formato {1}", addTitle(title, _("el audio")), source.type) + "</a></li>"));
+					}
+					else {
+						listSources.append($("<li><a class=\"downloadLink\" href=\"" + source.src + "\">" +
+							_("Descargar {0}, formato no especificado", addTitle(title, _("el audio"))) + "</a></li>"));
+					}
+				}
+				listSources.insertBefore(controlsLayer);
 			}
-		}
-		if (url !== undefined) {
-			var lnkDownload = $('<a class="lnkDownload" href="' + url + '">' + _('Descargar {0}', addTitle(title, _('el audio'))) + '</a>');
-			var pLnkDescargar = $("<p></p>");
-			pLnkDescargar.append(lnkDownload);
-			pLnkDescargar.insertBefore(controlsLayer);
+			else{
+				var lnkDownload = $('	<a class="lnkDownload" href="' + sources[0].src + '">' + _('Descargar {0}', addTitle(title, _('el audio'))) + '</a>');
+				var pLnkDescargar = $("<p></p>");
+				pLnkDescargar.append(lnkDownload);
+				pLnkDescargar.insertBefore(controlsLayer);
+			}
 		}
 	}
 	controlsLayer.append(ul);
@@ -262,10 +343,12 @@ $(function () {
 		else audioElement.currentTime -= 30;
 	});
 	$("html").on("focus", "a.btnPlayerControl", function () {
-		$(this).parents(".playerControls").removeClass("sr-only");
+		var playerControls = $(this).parents(".playerControls");
+		if (playerControls.hasClass("sr-only")) playerControls.removeClass("sr-only");
 	});
 	$("html").on("blur", "a.btnPlayerControl", function () {
-		$(this).parents(".playerControls").addClass("sr-only");
+		var cf = html5AcAudio.getConfig();
+		if (cf & html5AcAudio.configVisibility.accessibleControlsHideVisually == html5AcAudio.configVisibility.accessibleControlsHideVisually) $(this).parents(".playerControls").addClass("sr-only");
 	});
 	preparePlayers();
 });

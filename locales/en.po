@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: html5-accessible-audio-player\n"
-"POT-Creation-Date: 2016-01-21 16:56+0100\n"
-"PO-Revision-Date: 2016-01-21 17:03+0100\n"
+"POT-Creation-Date: 2016-01-22 13:06+0100\n"
+"PO-Revision-Date: 2016-01-22 13:07+0100\n"
 "Last-Translator: \n"
 "Language-Team: Juan José Montiel <juanjo@jmontiel.es>\n"
 "Language: es\n"
@@ -68,9 +68,10 @@ msgid "Reproduciendo..."
 msgstr "Playing..."
 
 #: html5-accessible-audio-player.js:103 html5-accessible-audio-player.js:112
-#: html5-accessible-audio-player.js:131 html5-accessible-audio-player.js:146
-#: html5-accessible-audio-player.js:147 html5-accessible-audio-player.js:172
-#: html5-accessible-audio-player.js:225
+#: html5-accessible-audio-player.js:131 html5-accessible-audio-player.js:171
+#: html5-accessible-audio-player.js:172 html5-accessible-audio-player.js:196
+#: html5-accessible-audio-player.js:200 html5-accessible-audio-player.js:206
+#: html5-accessible-audio-player.js:260
 msgid "el audio"
 msgstr "the audio"
 
@@ -83,7 +84,7 @@ msgid "Audio finalizado."
 msgstr "Audio ended"
 
 #: html5-accessible-audio-player.js:112 html5-accessible-audio-player.js:131
-#: html5-accessible-audio-player.js:146
+#: html5-accessible-audio-player.js:171
 msgid "Reproducir {0}"
 msgstr "Play {0}"
 
@@ -103,51 +104,59 @@ msgstr "Error while loading audio {0}. Error code: {1}."
 msgid "Pausado..."
 msgstr "Paused..."
 
-#: html5-accessible-audio-player.js:147 html5-accessible-audio-player.js:225
+#: html5-accessible-audio-player.js:172 html5-accessible-audio-player.js:260
 msgid "Silenciar {0}"
 msgstr "Mute {0}"
 
-#: html5-accessible-audio-player.js:148 html5-accessible-audio-player.js:149
-#: html5-accessible-audio-player.js:228
+#: html5-accessible-audio-player.js:173 html5-accessible-audio-player.js:174
+#: html5-accessible-audio-player.js:263
 msgid "al audio"
 msgstr "to audio"
 
-#: html5-accessible-audio-player.js:148
+#: html5-accessible-audio-player.js:173
 msgid "Bajar volumen {0}"
 msgstr "Decrease volume {0}"
 
-#: html5-accessible-audio-player.js:149
+#: html5-accessible-audio-player.js:174
 msgid "Subir volumen {0}"
 msgstr "Increase volume {0}"
 
-#: html5-accessible-audio-player.js:150 html5-accessible-audio-player.js:151
+#: html5-accessible-audio-player.js:175 html5-accessible-audio-player.js:176
 msgid "en el audio"
 msgstr "in audio"
 
-#: html5-accessible-audio-player.js:150
+#: html5-accessible-audio-player.js:175
 msgid "Avanzar treinta segundos {0}"
 msgstr "Forwar 30 seconds {0}"
 
-#: html5-accessible-audio-player.js:151
+#: html5-accessible-audio-player.js:176
 msgid "Retroceder treinta segundos {0}"
 msgstr "Backward 30 seconds {0}"
 
-#: html5-accessible-audio-player.js:153
+#: html5-accessible-audio-player.js:178
 msgid "Posición:"
 msgstr "Possition"
 
-#: html5-accessible-audio-player.js:154
+#: html5-accessible-audio-player.js:179
 msgid "0 segundos"
 msgstr "0 seconds"
 
-#: html5-accessible-audio-player.js:155
+#: html5-accessible-audio-player.js:180
 msgid "Duración:"
 msgstr "Duration"
 
-#: html5-accessible-audio-player.js:172
+#: html5-accessible-audio-player.js:196
+msgid "Descargar {0} en formato {1}"
+msgstr "Download {0} in {1} format"
+
+#: html5-accessible-audio-player.js:200
+msgid "Descargar {0}, formato no especificado"
+msgstr "Download {0}, unspecified format"
+
+#: html5-accessible-audio-player.js:206
 msgid "Descargar {0}"
 msgstr "Download {0}"
 
-#: html5-accessible-audio-player.js:228
+#: html5-accessible-audio-player.js:263
 msgid "Activar sonido {0}"
 msgstr "Unmute sound {0}"

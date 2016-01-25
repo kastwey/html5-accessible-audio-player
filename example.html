@@ -8,11 +8,17 @@
 </head>
 <body>
 	<h1>Html5 audio example</h1>
-	<audio src="Solitud_-_Count.mp3" data-title="Test audio" data-showdownloadlink="true" controls></audio>
+	<audio data-title="Test audio" data-showdownloadlink="true" controls>
+		<source src="solitud_-_count.mp3" type="audio/mp3" />
+		<source src="solitud_-_count.ogg" type="audio/ogg" />
+	</audio>
 	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="icu_en.js"></script>
 	<script type="text/javascript" src="translate.js"></script>
 	<script type="text/javascript" src="en.js"></script>
 	<script type="text/javascript" src="html5-accessible-audio-player.js"></script>
+	<script type="text/javascript">
+		html5AcAudio.configure(html5AcAudio.configVisibility.audioHideScreenReaders | html5AcAudio.configVisibility.audioHideVisually);
+	</script>
 </body>
 </html>
