@@ -30,7 +30,7 @@ To embed the script in your page, simply add the js files listed below in your b
 	<script type="text/javascript" src="en.js"></script>
 	<script type="text/javascript" src="html5-accessible-audio-player.js"></script>
 	
-	###Example, in spanish:
+###Example, in spanish:
 
 Since the script is written originally in Spanish, if we want to keep this language, we will skip the inclusion of translation script en.js, and we will change the file icu_en.js by icu_es.js:
 
@@ -58,7 +58,7 @@ Example to hide the native html5 audio element both visually and to screen reade
 
 	
 	
- ##How to translate the script to your language?{#translations}
+##How to translate the script to your language?{#translations}
 
 Do you really thing to do it? Great!
 
