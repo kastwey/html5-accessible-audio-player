@@ -75,7 +75,7 @@ If the country is not important, you can omit it. That is:  if there are not spe
 
 You can view the table of ISO codes on the following link: http://www.lingoes.net/en/translator/langcode.htm
 
-And finally, send me an email to inform me of the translation, and so inform about it!
+And finally, make a pull request from github, and  I will merge your changes!
 
 Thank you!
 
